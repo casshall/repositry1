@@ -3,6 +3,7 @@ class TimeSeries(object):
         self.data = data
     
     def get(self, x):
+        '''Find the corresponding y-value when given an x-value'''
         for (xi,yi) in self.data:
             if xi == x:
                 return yi
@@ -10,12 +11,12 @@ class TimeSeries(object):
         raise Exception("Didn't find the value")
     
     def view(self):
+        """function to view the data, but empty function right now"""
         pass
     
 class StepFunctionTimeSeries(TimeSeries):
     def get(self, x):
         '''Given an X value, get the corresponding Y value.
-        
         Uses step interpolation (gets the Y value of the nearest X point)'''
         
         closest_point = None
@@ -24,11 +25,13 @@ class StepFunctionTimeSeries(TimeSeries):
                 closest_point = (xi, yi)
             else:
                 cx, cy = closest_point
+                '''Compares for nearest point'''
                 if abs(xi-x) < abs(cx-x):
                     closest_point = (xi, yi)
         return closest_point[1]
         
 class LinearTimeSeries(TimeSeries):
+        '''Uses linear interpolation in the get() method of a TimeSeries'''
     def __init__(self, data):
         TimeSeries.__init__(self, data)
         self.data.sort()
